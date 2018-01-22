@@ -97,7 +97,7 @@ CONFIG_RTW_SDIO_PM_KEEP_POWER = y
 ###################### MP HW TX MODE FOR VHT #######################
 CONFIG_MP_VHT_HW_TX_MODE = n
 ###################### Platform Related #######################
-CONFIG_PLATFORM_I386_PC = y
+CONFIG_PLATFORM_I386_PC = n
 CONFIG_PLATFORM_ANDROID_X86 = n
 CONFIG_PLATFORM_ANDROID_INTEL_X86 = n
 CONFIG_PLATFORM_JB_X86 = n
@@ -133,6 +133,7 @@ CONFIG_PLATFORM_SZEBOOK = n
 CONFIG_PLATFORM_ARM_SUNxI = n
 CONFIG_PLATFORM_ARM_SUN6I = n
 CONFIG_PLATFORM_ARM_SUN7I = n
+CONFIG_PLATFORM_ARM_RPI = y
 CONFIG_PLATFORM_ARM_SUN8I_W3P1 = n
 CONFIG_PLATFORM_ARM_SUN8I_W5P1 = n
 CONFIG_PLATFORM_ACTIONS_ATM702X = n
@@ -1361,6 +1362,16 @@ ARCH := arm
 CROSS_COMPILE := /home/android_sdk/Rockchip/Rk3188/prebuilts/gcc/linux-x86/arm/arm-eabi-4.6/bin/arm-eabi-
 KSRC := /home/android_sdk/Rockchip/Rk3188/kernel
 MODULE_NAME := wlan
+endif
+
+ifeq ($(CONFIG_PLATFORM_ARM_RPI), y)
+EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN
+EXTRA_CFLAGS += -DCONFIG_IOCTL_CFG80211 -DRTW_USE_CFG80211_STA_EVENT
+ARCH := arm
+CROSS_COMPILE := 
+KVER  := $(shell uname -r)
+KSRC ?= /lib/modules/$(KVER)/build
+MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless/
 endif
 
 ifeq ($(CONFIG_PLATFORM_ARM_RK3066), y)
